@@ -1,0 +1,348 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);font-size:13px;line-height:1.6;color:var(--color-text-primary)}
+.wrap{padding:0.5rem 0}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.topbar-title{font-size:15px;font-weight:500}
+.timer{font-size:13px;font-weight:500;color:var(--color-text-warning);background:var(--color-background-warning);padding:4px 10px;border-radius:var(--border-radius-md)}
+.progress-wrap{display:flex;gap:6px;flex-wrap:wrap}
+.prog-dot{width:10px;height:10px;border-radius:50%;background:var(--color-border-secondary);cursor:pointer;transition:background 0.2s}
+.prog-dot.done{background:#1D9E75}
+.prog-dot.active{background:#378ADD}
+.unit-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.uBtn{padding:5px 12px;font-size:12px;font-weight:500;border:0.5px solid var(--color-border-secondary);border-radius:20px;background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s}
+.uBtn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.uBtn.sel{background:var(--color-background-primary);border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.uBtn.u1.sel{border-color:#378ADD;color:#0C447C}
+.uBtn.u2.sel{border-color:#1D9E75;color:#085041}
+.uBtn.u3.sel{border-color:#D85A30;color:#712B13}
+.uBtn.u4.sel{border-color:#7F77DD;color:#3C3489}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:10px;overflow:hidden}
+.unit-header{padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.uh-label{font-size:10px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:2px}
+.uh-title{font-size:14px;font-weight:500}
+.topic-block{border-bottom:0.5px solid var(--color-border-tertiary)}
+.topic-block:last-child{border-bottom:none}
+.topic-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;cursor:pointer;background:var(--color-background-primary)}
+.topic-head:hover{background:var(--color-background-secondary)}
+.topic-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.t-meta{display:flex;align-items:center;gap:8px}
+.imp{font-size:11px;letter-spacing:0.5px}
+.chk{width:16px;height:16px;border-radius:3px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;cursor:pointer}
+.chk.checked{background:#1D9E75;border-color:#1D9E75}
+.chk i{font-size:11px;color:#fff;display:none}
+.chk.checked i{display:block}
+.topic-body{display:none;padding:10px 14px 12px;background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary)}
+.topic-body.open{display:block}
+.sec{margin-bottom:9px}
+.sec-label{font-size:10px;font-weight:500;letter-spacing:0.5px;color:var(--color-text-tertiary);text-transform:uppercase;margin-bottom:5px}
+.pill-row{display:flex;flex-wrap:wrap;gap:4px}
+.pill{font-size:11px;padding:3px 7px;border-radius:20px;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);line-height:1.4}
+.pill.key{background:var(--color-background-info);border-color:#B5D4F4;color:#0C447C}
+.pill.reg{background:#FAEEDA;border-color:#FAC775;color:#633806}
+.list-pts{padding-left:0;list-style:none}
+.list-pts li{padding:2px 0;color:var(--color-text-secondary);font-size:12px;line-height:1.5}
+.list-pts li::before{content:"·  ";color:var(--color-text-tertiary)}
+.note-box{padding:7px 10px;border-left:2px solid;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;font-size:12px;color:var(--color-text-secondary);margin-bottom:8px}
+.nb-blue{border-color:#378ADD;background:#E6F1FB;color:#0C447C}
+.nb-green{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.nb-amber{border-color:#EF9F27;background:#FAEEDA;color:#633806}
+.nb-coral{border-color:#D85A30;background:#FAECE7;color:#712B13}
+.nb-purple{border-color:#7F77DD;background:#EEEDFE;color:#3C3489}
+.mark-read-btn{margin-top:8px;padding:5px 12px;font-size:12px;font-weight:500;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s}
+.mark-read-btn:hover{background:var(--color-background-success);border-color:#1D9E75;color:#085041}
+.mark-read-btn.done{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+.all-done-msg{display:none;padding:14px;text-align:center;background:var(--color-background-success);border-radius:var(--border-radius-lg);font-size:13px;color:var(--color-text-success);font-weight:500;margin-top:10px}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">2-hour last-minute revision: Marketing of Financial Products and Services — BBA (B&I) 310</h2>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">2-hour last minute revision</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px">BBA (B&I) 310 · 4 units · 22 topics · tick each as you finish</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="prog-count" style="font-size:12px;color:var(--color-text-secondary)">0 / 22 done</div>
+    <div class="timer" id="timer">2:00:00</div>
+  </div>
+</div>
+
+<div class="unit-nav">
+  <button class="uBtn u1 sel" onclick="filterUnit('all',this)">All units</button>
+  <button class="uBtn u1" onclick="filterUnit('u1',this)">Unit I — Marketing FS</button>
+  <button class="uBtn u2" onclick="filterUnit('u2',this)">Unit II — Retail Banking</button>
+  <button class="uBtn u3" onclick="filterUnit('u3',this)">Unit III — MF, Insurance, Pension</button>
+  <button class="uBtn u4" onclick="filterUnit('u4',this)">Unit IV — Distribution & Globalisation</button>
+</div>
+
+<div id="content-area"></div>
+<div class="all-done-msg" id="all-done">All 22 topics covered — good luck in the exam!</div>
+</div>
+
+<script>
+const UNITS=[
+{id:"u1",num:"Unit I",title:"Marketing of Financial Services",accent:"#378ADD",topics:[
+{id:"t1",name:"Conceptual framework of financial services",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Financial services = economic services by finance industry (banks, insurance, investment, credit)","Involve managing, lending, investing, and transferring money"]},
+  {label:"6 key characteristics — IIIPHD",note:{cls:"nb-blue",text:"Mnemonic: I I I P F D — Intangibility · Inseparability · Inconsistency (Heterogeneity) · Perishability · Fiduciary nature · Dominance of regulation"},pts:["Intangibility — cannot be physically touched or demonstrated","Inseparability — produced and consumed simultaneously","Heterogeneity — service quality varies with people/time","Perishability — cannot be stored; unused capacity is lost","Fiduciary — based on trust and confidence","Dominated by regulation — RBI, SEBI, IRDAI, PFRDA"]},
+  {label:"Importance",pts:["Capital formation and economic growth","Risk management and transfer","Financial inclusion","Supports investment and entrepreneurship"]},
+  {label:"Key regulators",pills:[{t:"RBI — banking",cls:"reg"},{t:"SEBI — securities",cls:"reg"},{t:"IRDAI — insurance",cls:"reg"},{t:"PFRDA — pension",cls:"reg"},{t:"AMFI — mutual funds",cls:"reg"}]},
+  {label:"Exam keywords",pills:[{t:"Intangibility",cls:"key"},{t:"Fiduciary",cls:"key"},{t:"Inseparability",cls:"key"},{t:"Perishability",cls:"key"},{t:"Financial inclusion",cls:"key"}]}
+]},
+{id:"t2",name:"Types of financial markets in India",imp:"★★★★",
+ sections:[
+  {label:"Main markets",note:{cls:"nb-blue",text:"Key distinction: Money Market = short-term (<1 yr) · Capital Market = long-term (>1 yr)"},
+   pts:["Money Market — T-bills, Call money, Commercial Paper (CP), Certificate of Deposit (CD)","Capital Market — Equity (shares), Debt (bonds/debentures), Hybrid","Primary Market — fresh issue of securities (IPO, FPO, Rights issue)","Secondary Market — trading of existing securities; NSE and BSE","Forex Market — currency exchange; governed by FEMA","Derivative Market — futures, options, swaps","Debt Market — government securities (G-Secs), corporate bonds"]},
+  {label:"Exam keywords",pills:[{t:"Money market",cls:"key"},{t:"Capital market",cls:"key"},{t:"IPO",cls:"key"},{t:"NSE/BSE",cls:"key"},{t:"SEBI",cls:"key"},{t:"Derivative",cls:"key"},{t:"T-bill",cls:"key"}]}
+]},
+{id:"t3",name:"Concept of marketing & marketing of financial services",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Marketing = creating, communicating, delivering and exchanging offerings that have value","Marketing of financial services = applying marketing principles to intangible, regulated, trust-based products"]},
+  {label:"Key features",pts:["Relationship-oriented (not transactional)","Heavily regulated environment","Customer education is essential","Digital transformation is reshaping all channels","Brand and trust are critical differentiators"]},
+  {label:"Marketing process",note:{cls:"nb-blue",text:"STP + 7Ps: Segment → Target → Position → Marketing Mix → Feedback"},pts:[]},
+  {label:"Why it changed in 2 decades",pts:["Internet banking and mobile apps replaced branches","Social media for awareness and customer engagement","Data analytics for personalised offers","Entry of private banks and fintechs increased competition","Government schemes (PMJDY, UPI) expanded market"]},
+  {label:"Exam keywords",pills:[{t:"STP",cls:"key"},{t:"CRM",cls:"key"},{t:"Brand loyalty",cls:"key"},{t:"Financial literacy",cls:"key"},{t:"Digital transformation",cls:"key"}]}
+]},
+{id:"t4",name:"Marketing mix in banking — 7Ps",imp:"★★★★★",
+ sections:[
+  {label:"7Ps — every P must be memorised",note:{cls:"nb-blue",text:"Basic 4Ps + extended 3Ps (People, Process, Physical Evidence) — applicable to all services"},
+   pts:["Product — loans, deposits, cards, investments, insurance","Price — interest rates, fees, service charges, penalty charges","Place — branch network, ATMs, internet, mobile, BC agents","Promotion — advertising, personal selling, PR, sales promotion, digital","People — staff, relationship managers, call centre, customer service teams","Process — account opening, loan appraisal, KYC, transaction systems","Physical Evidence — branch interiors, website UX, passbooks, statements"]},
+  {label:"Exam angle",pts:["Explain each P with a banking example","'3 additional Ps' question = focus on People, Process, Physical Evidence"]},
+  {label:"Exam keywords",pills:[{t:"7Ps",cls:"key"},{t:"Physical evidence",cls:"key"},{t:"Process",cls:"key"},{t:"People",cls:"key"},{t:"Intangible service",cls:"key"}]}
+]},
+{id:"t5",name:"Relationship marketing & CRM",imp:"★★★★★",
+ sections:[
+  {label:"Definitions",pts:["Relationship Marketing = building long-term profitable relationships with customers rather than one-off transactions","CRM = strategy + tools to manage all customer interactions across the lifecycle"]},
+  {label:"Why CRM matters for banks",pts:["Reduces customer acquisition cost (retaining > acquiring)","Increases customer lifetime value (CLV)","Enables cross-selling (home loan → insurance → mutual fund)","Personalised communication builds loyalty","Predictive analytics identifies at-risk customers"]},
+  {label:"CRM tools in banking",pts:["Loyalty programmes and reward points","Dedicated relationship managers for HNI/priority customers","Automated follow-up emails and SMS alerts","Net Promoter Score (NPS) surveys","CRM software platforms (Salesforce, Finacle CRM)"]},
+  {label:"Transactional vs relationship marketing",note:{cls:"nb-blue",text:"Transactional = one-time sale focus · Relationship = lifetime value, trust, repeat business"},pts:[]},
+  {label:"Exam keywords",pills:[{t:"CLV",cls:"key"},{t:"Cross-selling",cls:"key"},{t:"Retention",cls:"key"},{t:"Personalisation",cls:"key"},{t:"NPS",cls:"key"},{t:"Loyalty",cls:"key"}]}
+]}
+]},
+{id:"u2",num:"Unit II",title:"Retail Banking",accent:"#1D9E75",topics:[
+{id:"t6",name:"Concept and importance of retail banking",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Retail banking = banking services to individual consumers (not corporates/institutions)","Also called personal banking or consumer banking"]},
+  {label:"Key features",pts:["Mass market — standardised products for large customer base","High volume, low value transactions","Wide branch + ATM + digital network","Focus on individual needs (savings, loans, payments)","Financial inclusion mandate"]},
+  {label:"Importance",pts:["Mobilises household savings","Provides consumer credit (drives consumption)","Revenue diversification for banks","Employment generator (largest employer in BFSI)","Supports PMJDY and financial inclusion goals"]},
+  {label:"Exam keywords",pills:[{t:"Consumer banking",cls:"key"},{t:"Financial inclusion",cls:"key"},{t:"PMJDY",cls:"key"},{t:"Omni-channel",cls:"key"}]}
+]},
+{id:"t7",name:"Retail banking products — all loan types",imp:"★★★★★",
+ sections:[
+  {label:"Housing loan",note:{cls:"nb-green",text:"Secured · LTV up to 90% · Regulated by NHB + RBI · Tax benefit u/s 24(b) & 80C"},pts:["Long tenure (up to 30 years)","Floating or fixed interest rate","Property as collateral (mortgage)","EMI-based repayment"]},
+  {label:"Personal loan",pts:["Unsecured — no collateral required","Higher interest rate than secured loans","Any purpose (medical, travel, wedding)","Quick disbursal with minimal documentation"]},
+  {label:"Educational loan",pts:["For higher studies in India and abroad","Moratorium period = course duration + 1 year (no repayment during study)","Government interest subsidy for economically weaker students","Collateral required above ₹7.5 lakh (varies by bank)"]},
+  {label:"Conveyance (auto) loan",pts:["Secured against vehicle (hypothecation)","LTV up to 85–90% of vehicle on-road price","Car loans, two-wheeler loans","Fixed or floating rate; 1–7 year tenure"]},
+  {label:"Loan for retail traders",pts:["Working capital loans for small traders","Covered under priority sector lending (PSL) norms","PM Mudra Yojana (Shishu/Kishor/Tarun tiers)","Minimal collateral; supported by CGTMSE guarantee scheme"]},
+  {label:"Exam keywords",pills:[{t:"LTV",cls:"key"},{t:"Moratorium",cls:"key"},{t:"Hypothecation",cls:"key"},{t:"PSL",cls:"key"},{t:"Mudra",cls:"key"},{t:"CGTMSE",cls:"key"},{t:"NHB",cls:"key"}]}
+]},
+{id:"t8",name:"Plastic money — debit, credit, prepaid cards",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Plastic money = hard plastic cards used as payment instruments in lieu of cash","Issued by banks/payment networks; used at POS terminals and online"]},
+  {label:"Types — must know all 5",pts:["Debit Card — linked to bank account; amount debited instantly; uses ATM PIN / OTP","Credit Card — credit line from bank; pay later; interest if not paid in full; EMI option","Prepaid Card — preloaded fixed amount; no bank account needed; gift cards, travel cards","Co-branded Card — issued jointly with a merchant (Flipkart Axis, Amazon ICICI)","Smart Card — embedded microchip for enhanced security; contactless NFC payments"]},
+  {label:"Advantages over cash",pts:["No risk of carrying/losing cash","Enables online and international payments","Reward points, cashback, air miles","Builds credit score (credit card only)","EMI facility for large purchases","24/7 availability via POS and ATMs"]},
+  {label:"Limitations",pts:["Fraud, phishing, skimming risk","Overspending tendency with credit cards","Annual/renewal fees","High interest if credit card bill unpaid"]},
+  {label:"Exam keywords",pills:[{t:"POS terminal",cls:"key"},{t:"NFC / contactless",cls:"key"},{t:"CVV",cls:"key"},{t:"EMI",cls:"key"},{t:"Reward points",cls:"key"},{t:"Credit score",cls:"key"}]}
+]},
+{id:"t9",name:"Types of saving accounts & barter card",imp:"★★★",
+ sections:[
+  {label:"Types of savings accounts",pts:["Regular Savings Account — standard; minimum balance required","Salary Account — zero-balance; linked to employer; salary credited monthly","Student Account — lower min balance; for school/college students","Senior Citizen Account — higher interest rate; special benefits","BSBD Account (Basic Savings Bank Deposit) = zero-balance for financial inclusion; Jan Dhan accounts","Joint Account — operated by 2+ persons (Either or Survivor, Jointly)","NRI Account — NRE (tax-free, repatriable), NRO (taxable, non-repatriable)"]},
+  {label:"Barter card",note:{cls:"nb-green",text:"Barter card = a prepaid/stored-value card used in barter exchange networks; members exchange goods/services without cash"},pts:["Used in organised barter exchange clubs","Facilitates cashless exchange within the network","Not a traditional bank product — used by businesses"]},
+  {label:"Exam keywords",pills:[{t:"BSBD",cls:"key"},{t:"Jan Dhan",cls:"key"},{t:"Zero balance",cls:"key"},{t:"NRE/NRO",cls:"key"},{t:"Barter exchange",cls:"key"}]}
+]},
+{id:"t10",name:"Attracting and retaining bank customers",imp:"★★★★",
+ sections:[
+  {label:"Attraction strategies",pts:["Digital onboarding with paperless / video KYC","Competitive interest rates and product bundling","Aggressive advertising and referral programmes","Government scheme tie-ups (PM Jan Dhan, Mudra)","Fintech partnerships (Zerodha, Paytm co-branded products)"]},
+  {label:"Retention strategies",pts:["Loyalty programmes (reward points, cashback tiers)","Dedicated relationship manager for priority/HNI customers","Grievance redressal within SLA timelines","Personalised offers based on transaction history","Proactive communication (birthday offers, renewal reminders)","Cross-selling complementary products (savings → SIP → insurance)"]},
+  {label:"Exam keywords",pills:[{t:"KYC",cls:"key"},{t:"HNI",cls:"key"},{t:"Cross-selling",cls:"key"},{t:"Loyalty",cls:"key"},{t:"Personalisation",cls:"key"},{t:"CRM",cls:"key"}]}
+]}
+]},
+{id:"u3",num:"Unit III",title:"Mutual Funds, Insurance & Pension",accent:"#D85A30",topics:[
+{id:"t11",name:"Mutual funds in India — structure & types",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Pool of money from many investors invested in diversified securities","Managed by professional fund managers via an AMC (Asset Management Company)","Investors receive units; value = NAV (Net Asset Value) per unit"]},
+  {label:"NAV formula",note:{cls:"nb-coral",text:"NAV = (Total Assets − Liabilities) ÷ Total units outstanding · Declared daily for open-ended funds"},pts:[]},
+  {label:"Types by structure",pts:["Open-ended — buy/sell anytime at NAV; most popular","Close-ended — fixed units issued at NFO; listed on exchange after","Interval — combination; buy/sell during specific intervals only"]},
+  {label:"Types by asset class",pts:["Equity Funds — invest in stocks; higher risk/return","Debt Funds — invest in bonds, G-Secs, money market; lower risk","Hybrid/Balanced Funds — mix of equity + debt","Liquid Funds — very short maturity debt; parking surplus cash","ELSS — Equity Linked Saving Scheme; 3-year lock-in; 80C tax benefit","Index Funds / ETF — track index (Nifty 50, Sensex); passive management","Sectoral/Thematic — specific sector (banking, IT, pharma); high risk"]},
+  {label:"Key regulators/bodies",pills:[{t:"SEBI — regulates MF",cls:"reg"},{t:"AMFI — industry body",cls:"reg"},{t:"AMC — fund house",cls:"reg"}]},
+  {label:"Exam keywords",pills:[{t:"NAV",cls:"key"},{t:"AMC",cls:"key"},{t:"AMFI",cls:"key"},{t:"SIP",cls:"key"},{t:"ELSS",cls:"key"},{t:"AUM",cls:"key"},{t:"Open-ended",cls:"key"},{t:"NFO",cls:"key"}]}
+]},
+{id:"t12",name:"Marketing strategies of mutual funds",imp:"★★★★★",
+ sections:[
+  {label:"Key strategies",pts:["SEBI's 'Mutual Fund Sahi Hai' mass awareness campaign","SIP marketing — small regular amounts, rupee cost averaging, discipline message","Goal-based marketing — link MF to life goals (retirement, children's education, home)","ELSS tax-saving season campaigns (Jan–March)","Digital onboarding — paperless KYC, Aadhaar-based, app-based SIP","Distribution via banks (bancassurance-style), IFAs, and online platforms (Groww, Zerodha Coin)","Social media + influencer campaigns targeting young investors"]},
+  {label:"Challenges",pts:["Low financial literacy among retail investors","Perceived as risky (especially post-2008, 2020 market crashes)","Competition from bank FDs (guaranteed returns) and gold","Complex product naming and regulatory jargon"]},
+  {label:"Exam keywords",pills:[{t:"Mutual Fund Sahi Hai",cls:"key"},{t:"Rupee cost averaging",cls:"key"},{t:"IFA",cls:"key"},{t:"ARN",cls:"key"},{t:"Goal-based",cls:"key"},{t:"ELSS 80C",cls:"key"}]}
+]},
+{id:"t13",name:"Life insurance products",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Life insurance = contract where insurer pays sum assured on death or maturity in exchange for premium","Provides financial security to dependents; also doubles as savings/investment tool"]},
+  {label:"Types — all 7",pts:["Term Insurance — pure risk cover; high sum assured, low premium; NO maturity benefit; cheapest","Endowment Plan — protection + savings; maturity benefit if insured survives; lower cover","Whole Life Policy — covers entire lifetime; surrender value; used for estate planning","ULIP — insurance + market-linked investment; two components: mortality charge + fund value","Money Back Policy — periodic payouts during policy term + maturity benefit","Annuity/Pension Plan — pay premiums; receive regular income post-retirement","Child Plan — savings + protection for child's future goals; premium waiver on parent's death"]},
+  {label:"Regulator",pills:[{t:"IRDAI — regulates all insurance",cls:"reg"},{t:"LIC — dominant PSU insurer",cls:"reg"}]},
+  {label:"Exam keywords",pills:[{t:"Sum assured",cls:"key"},{t:"Premium",cls:"key"},{t:"ULIP",cls:"key"},{t:"Term plan",cls:"key"},{t:"Mortality charge",cls:"key"},{t:"Endowment",cls:"key"},{t:"IRDAI",cls:"key"}]}
+]},
+{id:"t14",name:"Non-life insurance products",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["General/non-life insurance = protection against financial loss other than death","Covers property, health, vehicles, liability, crops, travel"]},
+  {label:"Types — all 7",pts:["Health Insurance — hospitalisation, critical illness, senior citizen, family floater plans","Motor Insurance — Third-party (mandatory by law under MV Act) + Comprehensive (own damage + TP)","Home/Property Insurance — fire, theft, natural disaster; under-penetrated in India","Travel Insurance — trip cancellation, medical emergency abroad, lost baggage","Marine Insurance — cargo insurance (import/export goods) + hull insurance (vessels)","Crop Insurance — PMFBY (Pradhan Mantri Fasal Bima Yojana); government-subsidised","Commercial / Liability Insurance — professional indemnity, directors' liability, product liability"]},
+  {label:"Important scheme",note:{cls:"nb-coral",text:"PMFBY = Pradhan Mantri Fasal Bima Yojana — crop insurance at low premium; govt subsidises bulk of premium for farmers"},pts:[]},
+  {label:"Regulator",pills:[{t:"IRDAI",cls:"reg"}]},
+  {label:"Exam keywords",pills:[{t:"PMFBY",cls:"key"},{t:"Third-party",cls:"key"},{t:"Comprehensive",cls:"key"},{t:"Indemnity",cls:"key"},{t:"MV Act",cls:"key"},{t:"Marine cargo",cls:"key"}]}
+]},
+{id:"t15",name:"National Pension Scheme (NPS)",imp:"★★★★",
+ sections:[
+  {label:"Overview",note:{cls:"nb-coral",text:"NPS = National Pension System · Regulator = PFRDA · Launched 2004 (govt employees), 2009 (all citizens)"},pts:[]},
+  {label:"Structure — two tiers",pts:["Tier I — mandatory pension account; withdrawal restricted till 60 yrs; tax deductible contributions","Tier II — voluntary savings account; freely withdraw; NO tax benefit on contributions"]},
+  {label:"Fund options (subscriber chooses)",pts:["E = Equity (up to 75% for <50 yrs) — higher risk","C = Corporate bonds — moderate risk","G = Government securities — lowest risk","Auto Choice — life-cycle based; reduces equity exposure as age increases"]},
+  {label:"Tax benefits — very important for exam",pts:["₹1.5 lakh deduction u/s 80C (Tier I contributions)","Additional ₹50,000 u/s 80CCD(1B) — exclusive to NPS","Total potential deduction = ₹2 lakh"]},
+  {label:"Exit rules",pts:["At 60 yrs: min 40% goes to buy annuity (regular pension); 60% tax-free lump sum","Partial withdrawal allowed after 3 years for specific reasons","Premature exit: 80% must buy annuity; only 20% as lump sum"]},
+  {label:"Exam keywords",pills:[{t:"PFRDA",cls:"key"},{t:"PRAN",cls:"key"},{t:"Tier I / II",cls:"key"},{t:"Annuity",cls:"key"},{t:"80CCD(1B)",cls:"key"},{t:"APY",cls:"key"},{t:"Life-cycle fund",cls:"key"}]}
+]},
+{id:"t16",name:"Marketing of pension funds",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Pension fund marketing = promoting long-term retirement savings products to working-age individuals","Objective: increase enrolment, contribution levels, and awareness"]},
+  {label:"Marketing strategies",pts:["Tax benefit marketing — biggest USP is ₹2 lakh deduction","Corporate NPS — employer contributions as part of CTC (exempt from tax)","Point of need — marketed at account opening, salary account setup","Comparison with EPF/PPF — highlight market-linked returns of NPS over time","PFRDA's 'Pension Prerna' awareness campaign","Digital platforms — NPS mobile app, eNPS portal (paperless registration)","Target youth — compounding message: ₹5,000/month from age 25 = large corpus at 60"]},
+  {label:"Challenges",pts:["Low awareness and understanding of annuity structure","Preference for guaranteed returns (FD, PPF)","Strict exit and withdrawal norms seen as a negative","Competition from EPF (mandatory) and PPF (flexible)"]},
+  {label:"Exam keywords",pills:[{t:"PFRDA",cls:"key"},{t:"APY",cls:"key"},{t:"Corporate NPS",cls:"key"},{t:"Compounding",cls:"key"},{t:"eNPS",cls:"key"},{t:"Tax benefit",cls:"key"}]}
+]}
+]},
+{id:"u4",num:"Unit IV",title:"Distribution & Globalisation",accent:"#7F77DD",topics:[
+{id:"t17",name:"Concept of distribution in financial services",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Distribution = all methods and channels through which financial products reach end consumers","Core challenge: financial products are intangible — distribution is about accessibility and trust, not physical logistics"]},
+  {label:"Types of distribution channels",pts:["Direct — own branches, own sales force, bank's own website/app","Indirect — agents, brokers, DSAs (Direct Selling Agents), NBFCs","Bancassurance — banks distributing insurance products","Third-party distribution — independent financial advisors (IFAs), online aggregators","Digital / Fintech — Groww, Zerodha, Paytm Money, PolicyBazaar"]},
+  {label:"Factors affecting channel choice",pts:["Nature and complexity of product (insurance needs advice; SIP can be self-service)","Target customer segment (rural vs urban; HNI vs mass market)","Cost of distribution","Regulatory requirements (SEBI ARN for MF; IRDAI license for insurance agents)","Geographic reach needed"]},
+  {label:"Exam keywords",pills:[{t:"DSA",cls:"key"},{t:"IFA",cls:"key"},{t:"ARN",cls:"key"},{t:"Fintech",cls:"key"},{t:"Omni-channel",cls:"key"},{t:"PolicyBazaar",cls:"key"}]}
+]},
+{id:"t18",name:"Multiple delivery channels in banking",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Multiple delivery channels = various touchpoints through which a bank delivers services","Modern banks use omni-channel strategy — seamless experience across all channels"]},
+  {label:"All 9 channels — must know each",pts:["Branch Banking — traditional face-to-face; full-service; suitable for complex transactions","ATM — 24/7 cash withdrawal, balance inquiry, mini statement, fund transfer","Internet Banking — full-service portal; NEFT, RTGS, IMPS, bill pay, FD booking","Mobile Banking — app-based; fastest growing; UPI payments, account management","Telephone Banking (Phone Banking) — 24/7 IVR and live agents; account inquiry, block card","Kiosk Banking — self-service kiosk at public places; reduces branch footfall","Business Correspondent (BC) Model — bank agents (mates/retailers) in rural/unbanked areas; Aadhaar-based transactions; financial inclusion","POS (Point of Sale) Terminals — card swipe/tap machines at merchant counters","Video Banking — virtual face-to-face with banker; used for account opening, loan consultation"]},
+  {label:"Importance",pts:["24/7 availability increases customer satisfaction","Lower transaction cost vs branch (digital 10x cheaper than branch)","Wider geographic reach including rural India via BC model","Supports PMJDY and financial inclusion goals"]},
+  {label:"Exam keywords",pills:[{t:"Omni-channel",cls:"key"},{t:"BC model",cls:"key"},{t:"UPI",cls:"key"},{t:"NEFT/RTGS",cls:"key"},{t:"Kiosk",cls:"key"},{t:"Video banking",cls:"key"}]}
+]},
+{id:"t19",name:"Bancassurance",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Bancassurance = arrangement between a bank and insurance company where the bank distributes insurer's products through its branch network and customer base","Win-win: bank earns fee income; insurer gets large pre-qualified customer base"]},
+  {label:"How it works",pts:["Bank becomes 'corporate agent' of the insurance company","Bank staff trained to explain and sell insurance products","Customer gets one-stop financial services (banking + insurance at one place)","Both life and non-life products are distributed this way"]},
+  {label:"Advantages",pts:["Cost-effective for insurer (no need for separate distribution network)","Trusted channel — customers already trust their bank","Wider reach — especially in semi-urban and rural areas where agents are few","Cross-selling opportunity for bank (adds fee income)","Convenience for customer"]},
+  {label:"IRDAI regulation — important for exam",note:{cls:"nb-purple",text:"IRDAI limit: Each bank can tie up with maximum 1 life + 1 non-life + 1 standalone health insurance company"},pts:[]},
+  {label:"Exam keywords",pills:[{t:"Corporate agent",cls:"key"},{t:"IRDAI",cls:"key"},{t:"Cross-selling",cls:"key"},{t:"Fee income",cls:"key"},{t:"Insurance penetration",cls:"key"}]}
+]},
+{id:"t20",name:"Marketing information & research in banking",imp:"★★★",
+ sections:[
+  {label:"Definition",pts:["Marketing research = systematic gathering, recording, and analysing data to support marketing decisions in financial services","MIS (Marketing Information System) = continuous system to collect, process and distribute marketing data to decision-makers"]},
+  {label:"Research process — 5 steps",pts:["Step 1: Define research problem (e.g. why are savings accounts being closed?)","Step 2: Secondary data collection (RBI reports, FICCI, AMFI data, competitor annual reports)","Step 3: Primary research (surveys, interviews, focus groups, mystery shopping)","Step 4: Data analysis (regression, factor analysis, cross-tabulation)","Step 5: Report and implement recommendations"]},
+  {label:"Uses in banking",pts:["New product development (identify unmet needs)","Pricing decisions (competitive benchmarking)","Channel selection (which delivery channel to invest in)","Customer satisfaction measurement (CSAT, NPS)","Market entry analysis (new geography or segment)"]},
+  {label:"Exam keywords",pills:[{t:"MIS",cls:"key"},{t:"Primary data",cls:"key"},{t:"Secondary data",cls:"key"},{t:"NPS survey",cls:"key"},{t:"CSAT",cls:"key"},{t:"Focus group",cls:"key"}]}
+]},
+{id:"t21",name:"Public relations, publicity & image building",imp:"★★★★",
+ sections:[
+  {label:"Definition",pts:["Public Relations (PR) = managing information flow between a bank and its public (customers, media, regulators, investors, employees)","Publicity = unpaid media coverage; can be positive (award) or negative (scam)","Image building = long-term effort to create a positive perception of the bank in stakeholders' minds"]},
+  {label:"PR tools in banking",pts:["Press releases and media briefings for new products/results","Sponsorship of sports, cultural, and educational events","CSR (Corporate Social Responsibility) — Swachh Bharat, financial literacy camps","Annual reports, investor presentations, earnings calls","Crisis communication — proactive response to frauds, NPA controversies","Social media management — Twitter, LinkedIn, Instagram presence"]},
+  {label:"Image building strategies",pts:["Strong visual identity (logo, tagline — e.g. SBI's 'The Banker to Every Indian')","Consistent quality of service across all touchpoints","Community engagement and inclusive banking","Awards and recognitions (Best Bank awards)","Thought leadership — research publications, white papers"]},
+  {label:"Exam keywords",pills:[{t:"CSR",cls:"key"},{t:"Crisis communication",cls:"key"},{t:"Stakeholder engagement",cls:"key"},{t:"Brand reputation",cls:"key"},{t:"Publicity",cls:"key"},{t:"Tagline",cls:"key"}]}
+]},
+{id:"t22",name:"Globalisation & its impact on financial services",imp:"★★★★★",
+ sections:[
+  {label:"Definition",pts:["Globalisation = integration of national economies into a single global economy through trade, capital flows, migration, and technology","In finance: free flow of capital, financial institutions, and services across national borders"]},
+  {label:"Positive impacts on Indian financial services",pts:["Entry of foreign banks (Citi, HSBC, StanChart) → increased competition → better products","Technology transfer → core banking, mobile banking, fintech innovation","New and complex financial instruments (derivatives, forex products, structured products)","Adoption of international standards — Basel III (capital adequacy), IFRS (accounting)","Greater FDI inflows; Indian capital markets integrated with global markets","Indian banks expanding globally (SBI, BoB with overseas branches)","Growth of BFSI sector; job creation in financial services"]},
+  {label:"Challenges",pts:["Intensified competition for PSU banks (erosion of market share)","Systemic risk — global crisis spills into Indian markets (2008 Lehman effect)","Currency volatility and exchange rate risk","Regulatory compliance across multiple jurisdictions (FATCA, FEMA)","Cybersecurity and data privacy concerns with cross-border data flows"]},
+  {label:"How PSU banks became more competitive",note:{cls:"nb-purple",text:"Post-1991 liberalisation: CRR/SLR reduced → more lending capacity; private banks entry → forced PSUs to modernise; technology adoption; new products"},pts:[]},
+  {label:"Exam keywords",pills:[{t:"Liberalisation 1991",cls:"key"},{t:"Basel III",cls:"key"},{t:"FEMA",cls:"key"},{t:"FATCA",cls:"key"},{t:"FDI",cls:"key"},{t:"Fintech",cls:"key"},{t:"Systemic risk",cls:"key"}]}
+]}
+]}
+];
+
+let doneSet=new Set();
+let currentFilter='all';
+let timerSec=7200;
+let timerInterval=null;
+
+function pad(n){return n<10?'0'+n:n}
+function startTimer(){
+  timerInterval=setInterval(()=>{
+    timerSec--;
+    const h=Math.floor(timerSec/3600);
+    const m=Math.floor((timerSec%3600)/60);
+    const s=timerSec%60;
+    const el=document.getElementById('timer');
+    el.textContent=pad(h)+':'+pad(m)+':'+pad(s);
+    if(timerSec<=600){el.style.color='var(--color-text-danger)';el.style.background='var(--color-background-danger)';}
+    else if(timerSec<=1800){el.style.color='var(--color-text-warning)';el.style.background='var(--color-background-warning)';}
+    if(timerSec<=0){clearInterval(timerInterval);el.textContent='Time up!';}
+  },1000);
+}
+
+function filterUnit(uid,btn){
+  currentFilter=uid;
+  document.querySelectorAll('.uBtn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.querySelectorAll('.unit-block').forEach(u=>{
+    u.style.display=(uid==='all'||u.dataset.unit===uid)?'block':'none';
+  });
+}
+
+function toggleBody(tid){
+  const body=document.getElementById('body-'+tid);
+  const isOpen=body.classList.contains('open');
+  if(isOpen){body.classList.remove('open');}
+  else{body.classList.add('open');}
+}
+
+function markRead(tid){
+  doneSet.add(tid);
+  const btn=document.getElementById('markbtn-'+tid);
+  const chk=document.getElementById('chk-'+tid);
+  btn.textContent='Marked as read';
+  btn.classList.add('done');
+  chk.classList.add('checked');
+  const total=22;
+  const done=doneSet.size;
+  document.getElementById('prog-count').textContent=done+' / '+total+' done';
+  if(done===total){document.getElementById('all-done').style.display='block';}
+}
+
+function build(){
+  const area=document.getElementById('content-area');
+  UNITS.forEach(u=>{
+    const div=document.createElement('div');
+    div.className='unit-block';
+    div.dataset.unit=u.id;
+    let html=`<div class="card">
+      <div class="unit-header" style="border-left:3px solid ${u.accent};padding-left:12px">
+        <div class="uh-label">${u.num}</div>
+        <div class="uh-title">${u.title}</div>
+      </div>`;
+    u.topics.forEach(t=>{
+      html+=`<div class="topic-block">
+        <div class="topic-head" onclick="toggleBody('${t.id}')">
+          <div class="topic-name">${t.name}</div>
+          <div class="t-meta">
+            <span class="imp" style="color:${u.accent}">${t.imp}</span>
+            <div class="chk" id="chk-${t.id}"><i class="ti ti-check" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="topic-body" id="body-${t.id}">`;
+      t.sections.forEach(sec=>{
+        html+=`<div class="sec"><div class="sec-label">${sec.label}</div>`;
+        if(sec.note){html+=`<div class="note-box ${sec.note.cls}">${sec.note.text}</div>`;}
+        if(sec.pts&&sec.pts.length>0){html+=`<ul class="list-pts">${sec.pts.map(p=>`<li>${p}</li>`).join('')}</ul>`;}
+        if(sec.pills){html+=`<div class="pill-row">${sec.pills.map(p=>`<span class="pill ${p.cls}">${p.t}</span>`).join('')}</div>`;}
+        html+=`</div>`;
+      });
+      html+=`<button class="mark-read-btn" id="markbtn-${t.id}" onclick="markRead('${t.id}')">Mark as read</button>`;
+      html+=`</div></div>`;
+    });
+    html+=`</div>`;
+    div.innerHTML=html;
+    area.appendChild(div);
+  });
+}
+
+build();
+startTimer();
+</script>
